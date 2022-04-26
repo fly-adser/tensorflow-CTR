@@ -25,21 +25,46 @@ DICT_CATEGORICAL = {
     'd5': [i for i in range(1, 11)]
 }
 
-DEFAULT_VALUES = [
+LR_DEFAULT_VALUES = [
+    [0],
+    [0.0], [0.0], [0.0], [0.0], [0.0], [0.0], [0.0], [0.0], [0.0], [0.0], [0.0], [0.0]
+]
+
+LR_col_columns = [
+    'label',
+    's0', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11'
+]
+
+LR_feature_columns = [
+    DenseFeat(name='s0', dtype=tf.float32),
+    DenseFeat(name='s1', dtype=tf.float32),
+    DenseFeat(name='s2', dtype=tf.float32),
+    DenseFeat(name='s3', dtype=tf.float32),
+    DenseFeat(name='s4', dtype=tf.float32),
+    DenseFeat(name='s5', dtype=tf.float32),
+    DenseFeat(name='s6', dtype=tf.float32),
+    DenseFeat(name='s7', dtype=tf.float32),
+    DenseFeat(name='s8', dtype=tf.float32),
+    DenseFeat(name='s9', dtype=tf.float32),
+    DenseFeat(name='s10', dtype=tf.float32),
+    DenseFeat(name='s11', dtype=tf.float32)
+]
+
+FM_DEFAULT_VALUES = [
     [0],
     [0.0], [0.0], [0.0], [0.0], [0.0], [0.0], [0.0], [0.0], [0.0], [0.0], [0.0], [0.0],
     ['0'], ['0'], ['0'], ['0'], ['0'], ['0'],
     ['0:1.0;0:1.0;0:1.0'], ['0:1.0;0:1.0;0:1.0']
 ]
 
-col_columns = [
+FM_col_columns = [
     'label',
     's0', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11',
     'd0', 'd1', 'd2', 'd3', 'd4', 'd5',
     'm0', 'm1'
 ]
 
-feature_columns = [
+FM_feature_columns = [
     SparseFeat(name='d0', voc_size=12, hash_size=12, share_embed=None, embed_dim=4, dtype=tf.string),
     SparseFeat(name='d1', voc_size=12, hash_size=12, share_embed=None, embed_dim=4, dtype=tf.string),
     SparseFeat(name='d2', voc_size=12, hash_size=12, share_embed=None, embed_dim=4, dtype=tf.string),
