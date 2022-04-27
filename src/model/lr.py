@@ -1,6 +1,6 @@
 import tensorflow as tf
 from tensorflow.keras.layers import Concatenate
-from src.model.tf_common.feature_columns import build_input_features
+from src.model.tf_commonV1.feature_columns import build_input_features
 
 """
 docs link: https://zhuanlan.zhihu.com/p/56900935

@@ -2,8 +2,8 @@ import tensorflow as tf
 from tensorflow.keras import Input
 from tensorflow.keras.layers import Concatenate, Flatten,Dense
 from collections import OrderedDict
-from src.model.tf_common.layers import *
-from src.model.tf_common.utils import *
+from src.model.tf_commonV1.layers import *
+from src.model.tf_commonV1.utils import *
 
 def build_input_features(features_columns, prefix=''):
     input_features = OrderedDict()

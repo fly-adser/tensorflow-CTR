@@ -1,4 +1,4 @@
-from src.model.tf_common.utils import *
+from src.model.tf_commonV1.utils import *
 
 class LoadData(object):
 

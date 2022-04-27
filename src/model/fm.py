@@ -1,7 +1,7 @@
 from tensorflow.keras import Model
-from src.model.tf_common.feature_columns import *
-from src.model.tf_common.layers import *
-from src.model.tf_common.utils import *
+from src.model.tf_commonV1.feature_columns import *
+from src.model.tf_commonV1.layers import *
+from src.model.tf_commonV1.utils import *
 
 """
 docs link: https://zhuanlan.zhihu.com/p/397166601
