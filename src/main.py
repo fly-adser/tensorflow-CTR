@@ -4,7 +4,7 @@ import tensorflow as tf
 from src.model.tf_common.inputs import LoadData
 from src.model.lr import LRModel
 from src.model.fm import FMModel
-from src.model.gbm import XgbModel
+# from src.model.gbm import XgbModel
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
@@ -48,8 +48,8 @@ def fm():
     model.fit(train, validation_data=valid, epochs=3, workers=4)
 
 def main():
-    lr()
-    xgb()
+    # lr()
+    # xgb()
     fm()
 
 if __name__ == '__main__':
