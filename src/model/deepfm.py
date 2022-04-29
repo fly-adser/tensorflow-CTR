@@ -1,6 +1,6 @@
 import tensorflow as tf
 from tensorflow.keras.layers import Concatenate
-from src.model.tf_commonV2.layers import FMLayer
+from src.model.tf_commonV2.interaction import FMLayer
 from src.model.tf_commonV2.feature_columns import build_input_features, input_from_feature_columns
 
 """
