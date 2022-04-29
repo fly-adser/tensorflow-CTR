@@ -26,7 +26,7 @@ def DeepFMModel(feature_columns):
     nn_logit = tf.keras.layers.Flatten()(fc4)
 
     final_logit = Concatenate(axis=1)([fm_logit, nn_logit])
-    outputs    = tf.keras.layers.Dense(units=1, activation=tf.nn.sigmoid, use_bias=True)(final_logit)
-    model      = tf.keras.Model(inputs=input_list, outputs=outputs)
+    outputs     = tf.keras.layers.Dense(units=1, activation=tf.nn.sigmoid, use_bias=True)(final_logit)
+    model       = tf.keras.Model(inputs=input_list, outputs=outputs)
 
     return model
