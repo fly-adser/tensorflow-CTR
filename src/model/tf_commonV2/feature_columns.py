@@ -35,7 +35,7 @@ def input_from_feature_columns(features, feature_columns, l2_reg, prefix=''):
     dense_value_list      = get_dense_input(features, feature_columns)
     varlen_polling_embed  = get_varlen_pooling_list(varlen_embedding_dict, features, varlen_sparse_feature_columns)
 
-    return sparse_embedding_dict.values()+varlen_polling_embed.values(), dense_value_list
+    return list(sparse_embedding_dict.values())+list(varlen_polling_embed.values()), dense_value_list
 
 def concat_func(inputs, axis=-1):
     if len(inputs) == 1:
@@ -49,7 +49,7 @@ def get_linear_logit(sparse_embedding_list, dense_value_list):
         sparse_linear_layer = Flatten()(sparse_linear_layer)
         dense_linear = concat_func(dense_value_list)
         dense_linear_layer = Dense(1)(dense_linear)
-        linear_logit = Add()([dense_linear_layer, sparse_linear_layer])
+        linear_logit = concat_func([dense_linear_layer, sparse_linear_layer])
         return linear_logit
     elif len(sparse_embedding_list) > 0:
         sparse_linear_layer = Add()(sparse_embedding_list)

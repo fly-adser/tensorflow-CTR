@@ -51,7 +51,7 @@ def get_varlen_pooling_list(embedding_dict, features, varlen_sparse_feature_colu
     for feat in varlen_sparse_feature_columns:
         voc_name = feat.share_embed if feat.share_embed else feat.name
         if feat.weight_name:
-            seq_input = WeightedSequenceLayer()([embedding_dict][voc_name], features[feat.weight_name])
+            seq_input = WeightedSequenceLayer()([embedding_dict[voc_name], features[feat.weight_name]])
         else:
             seq_input = embedding_dict[voc_name]
         embedding_polling = SequencePollingLayer(feat.combiner)(seq_input)

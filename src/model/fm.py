@@ -8,7 +8,7 @@ docs link: https://zhuanlan.zhihu.com/p/397166601
 """
 def FMModel(feature_columns):
     """
-    param feature_columns: An iterable containing all the features used by LR model
+    param feature_columns: An iterable containing all the features used by FM model
     """
     features   = build_input_features(feature_columns)
     input_list = features.values()

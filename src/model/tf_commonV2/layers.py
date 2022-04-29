@@ -1,4 +1,5 @@
 import tensorflow as tf
+import tensorflow.keras.backend as K
 from tensorflow.keras.layers import Layer
 
 class VocabLayer(Layer):
@@ -53,6 +54,7 @@ class WeightedSequenceLayer(Layer):
 
     def call(self, inputs, **kwargs):
         key_input, value_input = inputs
+        value_input = tf.expand_dims(value_input, axis=2)
         return tf.multiply(key_input, value_input)
 
 class SequencePollingLayer(Layer):
@@ -66,10 +68,12 @@ class SequencePollingLayer(Layer):
 
     def call(self, inputs, **kwargs):
         if self.mode=='mean':
-            return tf.keras.layers.GlobalAvgPool1D()(inputs)
+            polling_embedding = tf.keras.layers.GlobalAvgPool1D()(inputs)
 
         if self.mode=='max':
-            return tf.keras.layers.GlobalMaxPool1D()(inputs)
+            polling_embedding = tf.keras.layers.GlobalMaxPool1D()(inputs)
+
+        return tf.expand_dims(polling_embedding, axis=1)
 
 class Add(Layer):
     def __init__(self, **kwargs):
