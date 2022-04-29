@@ -1,10 +1,13 @@
 from data.script.ConstructData import *
 from src.model.tf_commonV1.utils import *
-import tensorflow as tf
 from src.model.tf_commonV1.inputs import LoadData
+from src.model.tf_commonV2.LoadData import LoadCsvData
+from src.model.tf_commonV2.inputs import *
 from src.model.lr import LRModel
 from src.model.fm import FMModel
 from src.model.gbm import XgbModel
+from src.model.wdl import WDLModel
+
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
@@ -48,15 +51,19 @@ def fm():
     model.fit(train, validation_data=valid, epochs=3, workers=4)
 
 def wdl():
-    productData(dense=0, sparse=9, varlen=2, sample=10000)
-    loadData     = LoadData(col_columns=WDL_col_columns, feature_columns=WDL_linear_feature_columns+WDL_nn_feature_columns,
-                            DEFAULT_VALUES=WDL_DEFAULT_VALUES, batchSize=256)
+    productData(dense=12, sparse=6, varlen=2, sample=10000)
+    loadData     = LoadCsvData(col_columns=WDL_col_columns, feature_columns=WDL_linear_feature_columns+WDL_nn_feature_columns, DEFAULT_VALUES=WDL_DEFAULT_VALUES, batchSize=8)
     train, valid = loadData.load_data()
+
+    model        = WDLModel(WDL_linear_feature_columns, WDL_nn_feature_columns)
+    model.compile(tf.keras.optimizers.Adam(learning_rate=0.01), loss=tf.keras.metrics.binary_crossentropy, metrics=['accuracy'])
+    model.fit(train, validation_data=valid, epochs=3, workers=4)
 
 def main():
     lr()
     xgb()
     fm()
+    wdl()
 
 if __name__ == '__main__':
     main()
