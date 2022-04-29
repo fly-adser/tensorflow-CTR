@@ -7,6 +7,7 @@ from src.model.lr import LRModel
 from src.model.fm import FMModel
 from src.model.gbm import XgbModel
 from src.model.wdl import WDLModel
+from src.model.deepfm import DeepFMModel
 
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -52,11 +53,20 @@ def fm():
 
 def wdl():
     productData(dense=12, sparse=6, varlen=2, sample=10000)
-    loadData     = LoadCsvData(col_columns=WDL_col_columns, feature_columns=WDL_linear_feature_columns+WDL_nn_feature_columns, DEFAULT_VALUES=WDL_DEFAULT_VALUES, batchSize=8)
+    loadData     = LoadCsvData(col_columns=WDL_col_columns, feature_columns=WDL_linear_feature_columns+WDL_nn_feature_columns, DEFAULT_VALUES=WDL_DEFAULT_VALUES, batchSize=256)
     train, valid = loadData.load_data()
 
     model        = WDLModel(WDL_linear_feature_columns, WDL_nn_feature_columns)
     model.compile(tf.keras.optimizers.Adam(learning_rate=0.01), loss=tf.keras.metrics.binary_crossentropy, metrics=['accuracy'])
+    model.fit(train, validation_data=valid, epochs=3, workers=4)
+
+def deepfm():
+    productData(dense=0, sparse=6, varlen=2, sample=10000)
+    loadData = LoadCsvData(col_columns=DEEPFM_col_columns, feature_columns=DEEPFM_feature_columns,DEFAULT_VALUES=DEEPFM_DEFAULT_VALUES, batchSize=256)
+    train, valid = loadData.load_data()
+
+    model        = DeepFMModel(DEEPFM_feature_columns)
+    model.compile(tf.keras.optimizers.Adam(learning_rate=0.01), loss=tf.keras.metrics.binary_crossentropy,metrics=['accuracy'])
     model.fit(train, validation_data=valid, epochs=3, workers=4)
 
 def main():
@@ -64,6 +74,7 @@ def main():
     xgb()
     fm()
     wdl()
+    deepfm()
 
 if __name__ == '__main__':
     main()

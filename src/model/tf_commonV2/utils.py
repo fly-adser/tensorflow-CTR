@@ -75,3 +75,35 @@ WDL_nn_feature_columns = [
     VarLenSparseFeat(name='m1', voc_size=6, use_hash=True, weight_name='m1_weight', combiner='mean', embed_dim=4, maxlen=3,
                      embed_initializer=tf.keras.initializers.RandomUniform(minval=0.05, maxval=0.05, seed=0), dtype=tf.string)
 ]
+
+DEEPFM_DEFAULT_VALUES = [
+    [0],
+    ['0'], ['0'], ['0'], ['0'], ['0'], ['0'],
+    ['0:1.0;0:1.0;0:1.0'], ['0:1.0;0:1.0;0:1.0']
+]
+
+DEEPFM_col_columns = [
+    'label',
+    'd0', 'd1', 'd2', 'd3', 'd4', 'd5',
+    'm0', 'm1'
+]
+
+DEEPFM_feature_columns = [
+    SparseFeat(name='d0', voc_size=12, use_hash=True, share_embed=None, embed_dim=4,
+               embed_initializer=tf.keras.initializers.RandomUniform(minval=0.05, maxval=0.05, seed=0), dtype=tf.string),
+    SparseFeat(name='d1', voc_size=12, use_hash=True, share_embed=None, embed_dim=4,
+               embed_initializer=tf.keras.initializers.RandomUniform(minval=0.05, maxval=0.05, seed=0), dtype=tf.string),
+    SparseFeat(name='d2', voc_size=12, use_hash=True, share_embed=None, embed_dim=4,
+               embed_initializer=tf.keras.initializers.RandomUniform(minval=0.05, maxval=0.05, seed=0), dtype=tf.string),
+    SparseFeat(name='d3', voc_size=12, use_hash=True, share_embed=None, embed_dim=4,
+               embed_initializer=tf.keras.initializers.RandomUniform(minval=0.05, maxval=0.05, seed=0), dtype=tf.string),
+    SparseFeat(name='d4', voc_size=12, use_hash=True, share_embed=None, embed_dim=4,
+               embed_initializer=tf.keras.initializers.RandomUniform(minval=0.05, maxval=0.05, seed=0), dtype=tf.string),
+    SparseFeat(name='d5', voc_size=12, use_hash=True, share_embed=None, embed_dim=4,
+               embed_initializer=tf.keras.initializers.RandomUniform(minval=0.05, maxval=0.05, seed=0), dtype=tf.string),
+
+    VarLenSparseFeat(name='m0', voc_size=6, use_hash=True, weight_name='m0_weight', combiner='mean', embed_dim=4, maxlen=3,
+                     embed_initializer=tf.keras.initializers.RandomUniform(minval=0.05, maxval=0.05, seed=0), dtype=tf.string),
+    VarLenSparseFeat(name='m1', voc_size=6, use_hash=True, weight_name='m1_weight', combiner='mean', embed_dim=4, maxlen=3,
+                     embed_initializer=tf.keras.initializers.RandomUniform(minval=0.05, maxval=0.05, seed=0), dtype=tf.string)
+]
