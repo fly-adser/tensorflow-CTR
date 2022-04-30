@@ -1,7 +1,10 @@
+from copy import copy
+
 from tensorflow.keras import Input
 import tensorflow as tf
 from collections import OrderedDict
 from tensorflow.keras.layers import Concatenate, Flatten, Dense
+from tensorflow.keras.initializers import Zeros
 from src.model.tf_commonV2.utils import DenseFeat, SparseFeat, VarLenSparseFeat
 from src.model.tf_commonV2.inputs import create_embedding_matrix, embedding_lookup, get_dense_input, get_varlen_pooling_list
 from src.model.tf_commonV2.layers import Add
@@ -23,16 +26,26 @@ def build_input_features(features_columns, prefix=''):
 
     return input_features
 
-def input_from_feature_columns(features, feature_columns, l2_reg, prefix=''):
-    sparse_feature_columns = list(
-        filter(lambda x: isinstance(x, SparseFeat), feature_columns)) if feature_columns else []
-    varlen_sparse_feature_columns = list(
-        filter(lambda x: isinstance(x, VarLenSparseFeat), feature_columns)) if feature_columns else []
+def input_from_feature_columns(features, feature_columns, l2_reg, linear_dim=None, prefix=''):
+    linear_feature_columns = []
+    if linear_dim:
+        linear_feature_columns = copy(feature_columns)
+        for i in range(len(linear_feature_columns)):
+            if isinstance(linear_feature_columns[i], SparseFeat):
+                linear_feature_columns[i] = linear_feature_columns[i]._replace(embed_dim=1, embed_initializer=Zeros())
+            if isinstance(linear_feature_columns[i], VarLenSparseFeat):
+                linear_feature_columns[i] = linear_feature_columns[i]._replace(embed_dim=1, embed_initializer=Zeros())
+    use_columns = linear_feature_columns if linear_dim else feature_columns
 
-    embedding_matrix_dict = create_embedding_matrix(feature_columns, l2_reg, prefix)
+    sparse_feature_columns = list(
+        filter(lambda x: isinstance(x, SparseFeat), use_columns)) if use_columns else []
+    varlen_sparse_feature_columns = list(
+        filter(lambda x: isinstance(x, VarLenSparseFeat), use_columns)) if use_columns else []
+
+    embedding_matrix_dict = create_embedding_matrix(use_columns, l2_reg, prefix)
     sparse_embedding_dict = embedding_lookup(embedding_matrix_dict, features, sparse_feature_columns)
     varlen_embedding_dict = embedding_lookup(embedding_matrix_dict, features, varlen_sparse_feature_columns)
-    dense_value_list      = get_dense_input(features, feature_columns)
+    dense_value_list      = get_dense_input(features, use_columns)
     varlen_polling_embed  = get_varlen_pooling_list(varlen_embedding_dict, features, varlen_sparse_feature_columns)
 
     return list(sparse_embedding_dict.values())+list(varlen_polling_embed.values()), dense_value_list
@@ -85,3 +98,9 @@ def reduce_sum(input_tensor,
                              axis=axis,
                              keepdims=keep_dims,
                              name=name)
+
+def softmax(logits, dim=-1, name=None):
+    try:
+        return tf.nn.softmax(logits, dim=dim, name=name)
+    except TypeError:
+        return tf.nn.softmax(logits, axis=dim, name=name)

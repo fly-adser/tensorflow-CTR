@@ -10,6 +10,7 @@ from src.model.wdl import WDLModel
 from src.model.deepfm import DeepFMModel
 from src.model.dcn import DCNModel
 from src.model.xDeepFM import xDeepFMModel
+from src.model.afm import AFMModel
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
@@ -88,6 +89,15 @@ def xDeepFm():
     model.compile(tf.keras.optimizers.Adam(learning_rate=0.01), loss=tf.keras.metrics.binary_crossentropy, metrics=['accuracy'])
     model.fit(train, validation_data=valid, epochs=3, workers=4)
 
+def afm():
+    productData(dense=12, sparse=6, varlen=2, sample=10000)
+    loadData = LoadCsvData(col_columns=AFM_col_columns, feature_columns=AFM_feature_columns, DEFAULT_VALUES=AFM_DEFAULT_VALUES, batchSize=256)
+    train, valid = loadData.load_data()
+
+    model = AFMModel(AFM_feature_columns)
+    model.compile(tf.keras.optimizers.Adam(learning_rate=0.01), loss=tf.keras.metrics.binary_crossentropy,metrics=['accuracy'])
+    model.fit(train, validation_data=valid, epochs=3, workers=4)
+
 def main():
     lr()
     xgb()
@@ -96,6 +106,7 @@ def main():
     deepfm()
     dcn()
     xDeepFm()
+    afm()
 
 if __name__ == '__main__':
     main()
