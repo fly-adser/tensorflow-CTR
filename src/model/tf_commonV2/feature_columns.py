@@ -68,3 +68,20 @@ def flatten(sparse_embedding_list):
         embedding_list.append(tf.keras.layers.Flatten()(embedding))
 
     return embedding_list
+
+def reduce_sum(input_tensor,
+               axis=None,
+               keep_dims=False,
+               name=None,
+               reduction_indices=None):
+    try:
+        return tf.reduce_sum(input_tensor,
+                             axis=axis,
+                             keep_dims=keep_dims,
+                             name=name,
+                             reduction_indices=reduction_indices)
+    except TypeError:
+        return tf.reduce_sum(input_tensor,
+                             axis=axis,
+                             keepdims=keep_dims,
+                             name=name)
