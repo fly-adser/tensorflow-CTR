@@ -61,3 +61,10 @@ def get_linear_logit(sparse_embedding_list, dense_value_list):
         return dense_linear_layer
     else:
         raise Exception("linear_feature_columns can not be empty list")
+
+def flatten(sparse_embedding_list):
+    embedding_list = []
+    for embedding in sparse_embedding_list:
+        embedding_list.append(tf.keras.layers.Flatten()(embedding))
+
+    return embedding_list

@@ -8,6 +8,7 @@ from src.model.fm import FMModel
 from src.model.gbm import XgbModel
 from src.model.wdl import WDLModel
 from src.model.deepfm import DeepFMModel
+from src.model.dcn import DCNModel
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
@@ -68,12 +69,22 @@ def deepfm():
     model.compile(tf.keras.optimizers.Adam(learning_rate=0.01), loss=tf.keras.metrics.binary_crossentropy,metrics=['accuracy'])
     model.fit(train, validation_data=valid, epochs=3, workers=4)
 
+def dcn():
+    productData(dense=12, sparse=6, varlen=2, sample=10000)
+    loadData = LoadCsvData(col_columns=DCN_col_columns, feature_columns=DCN_feature_columns, DEFAULT_VALUES=DCN_DEFAULT_VALUES, batchSize=256)
+    train, valid = loadData.load_data()
+
+    model = DCNModel(DCN_feature_columns)
+    model.compile(tf.keras.optimizers.Adam(learning_rate=0.01), loss=tf.keras.metrics.binary_crossentropy, metrics=['accuracy'])
+    model.fit(train, validation_data=valid, epochs=3, workers=4)
+
 def main():
-    # lr()
-    # xgb()
+    lr()
+    xgb()
     fm()
     wdl()
     deepfm()
+    dcn()
 
 if __name__ == '__main__':
     main()
